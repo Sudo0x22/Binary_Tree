@@ -1,70 +1,70 @@
-#include<iostream>
+#include<bits/stdc++.h>
 #include<set>
 
 using namespace std;
 
 struct Node {
-  int data;
-  Node *left, *right;
+    int data;
+    struct Node* Left;
+    struct Node* Right;
 };
 
-Node* newNode(int key) {
-  Node* node = new Node;
-  node->data = key;
-  node->left = node->right = nullptr;
+struct Node* node(int data) {
+    struct Node* newNode = new Node;
+    newNode->data = data;
+    newNode->Left = NULL;
+    newNode->Right = NULL;
 
-  return node;
+    return newNode;
 }
 
-void in_order(Node* root) {
-  if (root == nullptr) {
-    return;
-  }
+void get_tree(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
 
-  in_order(root->left);
-  cout << root->data << " ";
-  in_order(root->right);
+    get_tree(root->Left);
+    cout << root->data << " ";
+    get_tree(root->Right);
 }
 
-void keys(Node* root, auto &set) {
-  if (root == nullptr) {
-    return;
-  }
+void tree(Node* root, auto &set) {
+    if (root == nullptr) {
+        return;
+    }
 
-  keys(root->left, set);
-  set.insert(root->data);
-  keys(root->right, set);
+    tree(root->Left, set);
+    set.insert(root->data);
+    tree(root->Right, set);
 }
 
-void convert(Node* root, auto &it) {
-  if (root == nullptr) {
-    return;
-  }
+void read_tree(Node* root, auto &it) {
+    if (root == nullptr) {
+        return;
+    }
 
-  convert(root->left, it);
-  root->data = *it;
-  it++;
+    read_tree(root->Left, it);
+    root->data = *it;
+    it++;
 
-  convert(root->right, it);
+    read_tree(root->Right, it);
 }
 
 int main()
 {
-  Node* root = newNode(1);
-  root->left = newNode(5);
-  root->right = newNode(10);
-  root->left->left = newNode(9);
-  root->left->right = newNode(3);
-  root->right->left = newNode(6);
-  root->right->right = newNode(8);
+    Node* root = node(1);
+    root->Left = node(5);
+    root->Right = node(7);
+    root->Left->Left = node(4);
+    root->Left->Right = node(10);
+    root->Right->Left = node(11);
+    root->Right->Right = node(6);
 
-  set<int> set;
-  keys(root, set);
+    set<int> set;
+    tree(root, set);
 
-  auto it = set.begin();
-  convert(root, it);
+    auto it = set.begin();
+    read_tree(root, it);
 
-  in_order(root);
-
-  return 0;
+    get_tree(root);
 }
